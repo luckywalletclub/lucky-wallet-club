@@ -1,54 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Wallet Clicker Game</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      width: 100vw;
-      height: 100vh;
-      overflow: hidden;
-      background: #181c24;
-      color: #fff;
-      font-family: 'Poppins', Arial, sans-serif;
-    }
-    #game-container {
-      width: 100vw;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    .phaser-button {
-      font-family: 'Poppins', Arial, sans-serif;
-      font-size: 18px;
-      padding: 12px 32px;
-      border-radius: 24px;
-      border: none;
-      background: #6c47ff;
-      color: #fff;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-      cursor: pointer;
-      margin: 8px;
-      transition: background 0.2s;
-    }
-    .phaser-button:hover {
-      background: #8e6fff;
-    }
-  </style>
-</head>
-<body>
-  <div id="game-container"></div>
-  <script src="https://cdn.jsdelivr.net/npm/phaser@3.70.0/dist/phaser.js"></script>
-  <script>
-    if (window.Telegram && window.Telegram.WebApp) {
-      window.Telegram.WebApp.expand();
-    }
-  </script>
-  <script src="main.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wallet Clicker Game</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+      html, body, #root {
+        width: 100vw;
+        height: 100vh;
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(135deg, #2563eb 0%, #ffb300 100%);
+        font-family: 'Poppins', Arial, sans-serif;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
 </html> 

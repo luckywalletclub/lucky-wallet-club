@@ -24,7 +24,7 @@ class HomeScene extends Phaser.Scene {
     this.cameras.main.setBackgroundColor('#181c24');
 
     // Başlık
-    this.add.text(width / 2, 60, 'Wallet Clicker', {
+    this.add.text(width / 2, 60, 'Lucky Wallet Club', {
       fontFamily: 'Poppins', fontSize: '32px', color: '#fff', fontStyle: 'bold'
     }).setOrigin(0.5);
 

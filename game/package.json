@@ -1,15 +1,18 @@
 {
-  "name": "lucky-wallet-clicker-game",
+  "name": "wallet-clicker-game",
   "version": "1.0.0",
-  "description": "A simple clicker game built with Phaser.js for Telegram integration.",
-  "main": "main.js",
+  "description": "A modern clicker game with React, inspired by Banana game UI.",
+  "main": "src/main.jsx",
   "scripts": {
-    "start": "npx serve ."
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "dependencies": {
-    "phaser": "^3.70.0"
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "serve": "^14.2.0"
+    "vite": "^4.5.0"
   }
 } 

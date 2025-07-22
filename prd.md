@@ -110,3 +110,23 @@ Telegram üzerinde, kullanıcıların cüzdan görsellerine tıklayarak puan (ö
 - **Mobil ve Telegram WebApp Uyumu:**  UI/UX’i tamamen mobil ve Telegram WebApp’e uygun, hızlı ve sade tut.
 
 - **Başlangıçta MVP’ye Odaklan:**  Ana clicker, market, görev, leaderboard ve referans sistemiyle başla. Token ve karmaşık ekonomi işini ileride ekle. 
+
+## 12. Gelişim Durumu (Son Güncelleme)
+
+- **UI/UX ve temel ekranlar (Home, Market, Bag, Tasks, Leaderboard, tab bar, progress ring, responsive tasarım):** ✔️ Tamamlandı.
+- **Oyun mantığı, koleksiyon, görev, market, boost, referans sistemi ve backend entegrasyonu:** ⏳ Altyapı hazır, ancak logic ve veri yönetimi ileride eklenecek.
+- **Ana menüde clicker ve puan toplama:** ✔️
+- **Günlük click limiti:** ✔️
+- **Progress bar (dairesel, Banana tarzı):** ✔️
+- **Marketten cüzdan satın alma ve equip etme:** ⏳ (Ekran hazır, logic yok)
+- **Görevler ve ödüller:** ⏳ (Ekran hazır, logic yok)
+- **Leaderboard:** ⏳ (Ekran hazır, veri yok)
+- **Basit referans sistemi:** ❌
+- **Reklam izleyerek boost alma:** ❌
+- **Backend ve veri yönetimi:** ❌
+- **Token, NFT, gelişmiş koleksiyon:** ❌
+
+---
+
+**Bir sonraki adımda hangi modüle veya özelliğe öncelik vermek istersin?  
+Market logic, görevler, backend, referans sistemi veya başka bir şey?** 
