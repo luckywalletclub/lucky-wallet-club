@@ -12,5 +12,6 @@ bot.onText(/\/start/, (msg) => {
 });
 
 bot.onText(/\/game/, (msg) => {
-  bot.sendMessage(msg.chat.id, 'Game started! (Game link will be here soon)');
+  const url = 'https://lucky-wallet-club.vercel.app';
+  bot.sendMessage(msg.chat.id, `Game started! Play here: ${url}`);
 });
