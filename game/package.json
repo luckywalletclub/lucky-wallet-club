@@ -1,0 +1,15 @@
+{
+  "name": "lucky-wallet-clicker-game",
+  "version": "1.0.0",
+  "description": "A simple clicker game built with Phaser.js for Telegram integration.",
+  "main": "main.js",
+  "scripts": {
+    "start": "npx serve ."
+  },
+  "dependencies": {
+    "phaser": "^3.70.0"
+  },
+  "devDependencies": {
+    "serve": "^14.2.0"
+  }
+} 
