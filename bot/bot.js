@@ -8,10 +8,16 @@ require('dotenv').config();
 const bot = new TelegramBot(token, { polling: true });
 
 bot.onText(/\/start/, (msg) => {
-  bot.sendMessage(msg.chat.id, 'Hello! Type /game to start the game.');
-});
-
-bot.onText(/\/game/, (msg) => {
-  const url = 'https://lucky-wallet-club.vercel.app';
-  bot.sendMessage(msg.chat.id, `Game started! Play here: ${url}`);
+  bot.sendMessage(msg.chat.id, "Welcome to the Winners Club!\nJoin the Club and be lucky one!", {
+    reply_markup: {
+      inline_keyboard: [
+        [
+          {
+            text: "Play !",
+            web_app: { url: "https://lucky-wallet-club.vercel.app" }
+          }
+        ]
+      ]
+    }
+  });
 });
