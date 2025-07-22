@@ -5,13 +5,33 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lucky Wallet Clicker Game</title>
   <style>
-    body { background: #181c24; color: #fff; margin: 0; font-family: Arial, sans-serif; }
-    #game-container { margin: 0 auto; display: flex; justify-content: center; align-items: center; height: 100vh; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background: #181c24;
+      color: #fff;
+      font-family: Arial, sans-serif;
+    }
+    #game-container {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
   </style>
 </head>
 <body>
   <div id="game-container"></div>
   <script src="https://cdn.jsdelivr.net/npm/phaser@3.70.0/dist/phaser.js"></script>
+  <script>
+    if (window.Telegram && window.Telegram.WebApp) {
+      window.Telegram.WebApp.expand();
+    }
+  </script>
   <script src="main.js"></script>
 </body>
 </html> 
