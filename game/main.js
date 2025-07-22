@@ -1,109 +1,127 @@
-class WheelScene extends Phaser.Scene {
+// Görsel placeholder için assets/wallet.png kullanılacak
+const SCENES = {
+  HOME: 'HomeScene',
+  MARKET: 'MarketScene',
+  BAG: 'BagScene',
+  TASKS: 'TasksScene',
+  LEADERBOARD: 'LeaderboardScene',
+};
+
+class HomeScene extends Phaser.Scene {
   constructor() {
-    super({ key: 'WheelScene' });
-    this.isSpinning = false;
-    this.prizes = [
-      '50 Coins', 'Try Again', '100 Coins', 'No Prize', '200 Coins', 'Bonus Spin'
-    ];
+    super(SCENES.HOME);
+    this.dailyLimit = 500;
+    this.walletPoints = 0;
+    this.clicksToday = 0;
   }
 
   preload() {
-    this.load.image('pointer', 'https://cdn.jsdelivr.net/gh/photonstorm/phaser3-examples/public/assets/sprites/longarrow.png');
-    this.load.audio('spin', 'assets/spin.wav');
-    this.load.audio('win', 'assets/win.wav');
+    this.load.image('wallet', 'assets/wallet.png');
   }
 
   create() {
-    const centerX = this.scale.width / 2;
-    const centerY = this.scale.height / 2;
-    const radius = Math.min(this.scale.width, this.scale.height) / 3;
-    const colors = [0xffe066, 0xf38181, 0x95e1d3, 0xfce38a, 0xeaafc8, 0x62d2a2];
+    const { width, height } = this.scale;
+    this.cameras.main.setBackgroundColor('#181c24');
 
-    // Çark için container
-    this.wheelContainer = this.add.container(centerX, centerY);
-
-    // Dilimleri ve yazıları birlikte ekle
-    for (let i = 0; i < 6; i++) {
-      // Dilim
-      const graphics = this.add.graphics();
-      graphics.fillStyle(colors[i], 1);
-      graphics.slice(0, 0, radius, Phaser.Math.DegToRad(i * 60), Phaser.Math.DegToRad((i + 1) * 60), false);
-      graphics.fillPath();
-
-      // Yazı
-      const angle = Phaser.Math.DegToRad(i * 60 + 30);
-      const textX = Math.cos(angle) * (radius * 0.65);
-      const textY = Math.sin(angle) * (radius * 0.65);
-      const label = this.add.text(textX, textY, this.prizes[i], {
-        fontSize: '16px',
-        color: '#222',
-        fontStyle: 'bold'
-      }).setOrigin(0.5).setAngle(i * 60 + 30);
-
-      this.wheelContainer.add(graphics);
-      this.wheelContainer.add(label);
-    }
-
-    // Pointer (ok)
-    this.pointer = this.add.image(centerX, centerY - radius - 30, 'pointer').setScale(0.2).setAngle(180);
-
-    // Spin butonu
-    this.spinButton = this.add.text(centerX, centerY + radius + 60, 'SPIN!', {
-      fontSize: '32px',
-      backgroundColor: '#FFD700',
-      color: '#222',
-      padding: { x: 30, y: 10 },
-      borderRadius: 10
-    }).setOrigin(0.5).setInteractive();
-
-    this.spinButton.on('pointerdown', () => this.spinWheel());
-
-    // Sonuç metni
-    this.resultText = this.add.text(centerX, centerY + radius + 120, '', {
-      fontSize: '24px',
-      color: '#fff'
+    // Başlık
+    this.add.text(width / 2, 60, 'Wallet Clicker', {
+      fontFamily: 'Poppins', fontSize: '32px', color: '#fff', fontStyle: 'bold'
     }).setOrigin(0.5);
 
-    // Sesler
-    this.spinSound = this.sound.add('spin');
-    this.winSound = this.sound.add('win');
+    // Cüzdan görseli
+    this.walletImg = this.add.image(width / 2, height / 2 - 40, 'wallet').setDisplaySize(120, 80).setInteractive();
 
-    this.scale.on('resize', this.resize, this);
+    // Click butonu
+    this.clickBtn = this.add.text(width / 2, height / 2 + 70, 'CLICK!', {
+      fontFamily: 'Poppins', fontSize: '28px', backgroundColor: '#6c47ff', color: '#fff', padding: { x: 32, y: 12 }, borderRadius: 24
+    }).setOrigin(0.5).setInteractive();
+
+    // Puan ve kalan click
+    this.pointsText = this.add.text(width / 2, height / 2 + 130, `Points: ${this.walletPoints}`, {
+      fontFamily: 'Poppins', fontSize: '22px', color: '#FFD700'
+    }).setOrigin(0.5);
+    this.limitText = this.add.text(width / 2, height / 2 + 170, `Clicks left: ${this.dailyLimit - this.clicksToday}`, {
+      fontFamily: 'Poppins', fontSize: '18px', color: '#fff'
+    }).setOrigin(0.5);
+
+    // Menü butonları
+    this.createNavButton(width / 2 - 120, height - 60, 'Market', SCENES.MARKET);
+    this.createNavButton(width / 2, height - 60, 'Bag', SCENES.BAG);
+    this.createNavButton(width / 2 + 120, height - 60, 'Tasks', SCENES.TASKS);
+    this.createNavButton(width - 80, 40, 'Leaderboard', SCENES.LEADERBOARD, 0.7);
+
+    // Click event
+    this.walletImg.on('pointerdown', () => this.handleClick());
+    this.clickBtn.on('pointerdown', () => this.handleClick());
   }
 
-  spinWheel() {
-    if (this.isSpinning) return;
-    this.isSpinning = true;
-    this.resultText.setText('');
-
-    const prizeIndex = Phaser.Math.Between(0, 5);
-    const rounds = Phaser.Math.Between(3, 5);
-    const finalAngle = 360 * rounds + (prizeIndex * 60) + 30;
-
-    // Spin sesi başlat ve referansını tut
-    const spinSoundInstance = this.spinSound.play();
-
-    // 3 saniye sonra spin sesini durdur
-    this.time.delayedCall(3000, () => {
-      this.spinSound.stop();
-    });
-
-    this.tweens.add({
-      targets: this.wheelContainer,
-      angle: finalAngle,
-      duration: 3000,
-      ease: 'Cubic.easeOut',
-      onComplete: () => {
-        this.isSpinning = false;
-        this.resultText.setText('You won: ' + this.prizes[prizeIndex]);
-        // Kazanma sesi
-        this.winSound.play();
-      }
-    });
+  handleClick() {
+    if (this.clicksToday < this.dailyLimit) {
+      this.walletPoints++;
+      this.clicksToday++;
+      this.pointsText.setText(`Points: ${this.walletPoints}`);
+      this.limitText.setText(`Clicks left: ${this.dailyLimit - this.clicksToday}`);
+      // Basit animasyon
+      this.tweens.add({ targets: this.walletImg, scale: 1.1, yoyo: true, duration: 80 });
+    }
   }
 
-  resize(gameSize) {
-    this.scene.restart();
+  createNavButton(x, y, label, targetScene, scale = 1) {
+    const btn = this.add.text(x, y, label, {
+      fontFamily: 'Poppins', fontSize: '20px', backgroundColor: '#fff', color: '#6c47ff', padding: { x: 24, y: 10 }, borderRadius: 20
+    }).setOrigin(0.5).setInteractive().setScale(scale);
+    btn.on('pointerdown', () => this.scene.start(targetScene, { from: SCENES.HOME, walletPoints: this.walletPoints, clicksToday: this.clicksToday }));
+  }
+}
+
+function createBackButton(scene, x, y, fromScene, extra = {}) {
+  const btn = scene.add.text(x, y, '< Back', {
+    fontFamily: 'Poppins', fontSize: '18px', backgroundColor: '#fff', color: '#6c47ff', padding: { x: 18, y: 8 }, borderRadius: 16
+  }).setOrigin(0, 0.5).setInteractive();
+  btn.on('pointerdown', () => scene.scene.start(fromScene, extra));
+}
+
+class MarketScene extends Phaser.Scene {
+  constructor() { super(SCENES.MARKET); }
+  create(data) {
+    const { width } = this.scale;
+    this.cameras.main.setBackgroundColor('#181c24');
+    this.add.text(width / 2, 60, 'Market', { fontFamily: 'Poppins', fontSize: '32px', color: '#fff' }).setOrigin(0.5);
+    this.add.text(width / 2, 200, 'Market screen (coming soon)', { fontFamily: 'Poppins', fontSize: '20px', color: '#FFD700' }).setOrigin(0.5);
+    createBackButton(this, 40, 40, SCENES.HOME, data);
+  }
+}
+
+class BagScene extends Phaser.Scene {
+  constructor() { super(SCENES.BAG); }
+  create(data) {
+    const { width } = this.scale;
+    this.cameras.main.setBackgroundColor('#181c24');
+    this.add.text(width / 2, 60, 'Bag', { fontFamily: 'Poppins', fontSize: '32px', color: '#fff' }).setOrigin(0.5);
+    this.add.text(width / 2, 200, 'Bag screen (coming soon)', { fontFamily: 'Poppins', fontSize: '20px', color: '#FFD700' }).setOrigin(0.5);
+    createBackButton(this, 40, 40, SCENES.HOME, data);
+  }
+}
+
+class TasksScene extends Phaser.Scene {
+  constructor() { super(SCENES.TASKS); }
+  create(data) {
+    const { width } = this.scale;
+    this.cameras.main.setBackgroundColor('#181c24');
+    this.add.text(width / 2, 60, 'Tasks', { fontFamily: 'Poppins', fontSize: '32px', color: '#fff' }).setOrigin(0.5);
+    this.add.text(width / 2, 200, 'Tasks screen (coming soon)', { fontFamily: 'Poppins', fontSize: '20px', color: '#FFD700' }).setOrigin(0.5);
+    createBackButton(this, 40, 40, SCENES.HOME, data);
+  }
+}
+
+class LeaderboardScene extends Phaser.Scene {
+  constructor() { super(SCENES.LEADERBOARD); }
+  create(data) {
+    const { width } = this.scale;
+    this.cameras.main.setBackgroundColor('#181c24');
+    this.add.text(width / 2, 60, 'Leaderboard', { fontFamily: 'Poppins', fontSize: '32px', color: '#fff' }).setOrigin(0.5);
+    this.add.text(width / 2, 200, 'Leaderboard screen (coming soon)', { fontFamily: 'Poppins', fontSize: '20px', color: '#FFD700' }).setOrigin(0.5);
+    createBackButton(this, 40, 40, SCENES.HOME, data);
   }
 }
 
@@ -111,9 +129,9 @@ const config = {
   type: Phaser.AUTO,
   width: window.innerWidth,
   height: window.innerHeight,
-  backgroundColor: '#222831',
+  backgroundColor: '#181c24',
   parent: 'game-container',
-  scene: [WheelScene],
+  scene: [HomeScene, MarketScene, BagScene, TasksScene, LeaderboardScene],
   scale: {
     mode: Phaser.Scale.RESIZE,
     autoCenter: Phaser.Scale.CENTER_BOTH
