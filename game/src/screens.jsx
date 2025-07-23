@@ -102,6 +102,7 @@ export function Home({ onLeaderboardClick }) {
       fetch(`${import.meta.env.VITE_BACKEND_URL || 'https://luckywallet-backend.onrender.com'}/api/user/${tid}`)
         .then(res => res.json())
         .then(data => {
+          console.log('Kullanıcı verisi:', data);
           setTelegramUsername(data.username || '');
           setPoints(typeof data.points === 'number' ? data.points : 0);
         });
