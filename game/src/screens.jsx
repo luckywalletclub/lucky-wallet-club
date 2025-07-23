@@ -89,20 +89,9 @@ export function Home({ onLeaderboardClick }) {
   const [clicks, setClicks] = useState(0);
   const [confettiTrigger, setConfettiTrigger] = useState(false);
   const [walletClicked, setWalletClicked] = useState(false);
+  // Username artık backend'den alınacak, şimdilik dummy
   const [telegramUsername, setTelegramUsername] = useState('');
   const dailyLimit = 50;
-  // Kullanıcı adını Telegram WebApp API'den al
-  React.useEffect(() => {
-    console.log('Telegram WebApp:', window.Telegram);
-    if (
-      window.Telegram &&
-      window.Telegram.WebApp &&
-      window.Telegram.WebApp.initDataUnsafe &&
-      window.Telegram.WebApp.initDataUnsafe.user
-    ) {
-      setTelegramUsername(window.Telegram.WebApp.initDataUnsafe.user.username || '');
-    }
-  }, []);
   // Animasyon bitince class'ı kaldır
   React.useEffect(() => {
     if (walletClicked) {
@@ -139,7 +128,7 @@ export function Home({ onLeaderboardClick }) {
           CLICK!
         </button>
         <div style={{ color: '#888', fontSize: '1.08rem', marginTop: 12, textAlign: 'center', fontWeight: 500 }}>
-          {telegramUsername ? `@${telegramUsername}` : 'Telegram ile giriş yapınız'}
+          {telegramUsername ? `@${telegramUsername}` : 'Kullanıcı adı yükleniyor...'}
         </div>
       </div>
     </div>

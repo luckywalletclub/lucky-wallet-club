@@ -8,12 +8,21 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
   "dependencies": {
     "@react-three/drei": "^10.5.2",
     "@react-three/fiber": "^9.2.0",
     "dotenv": "^17.2.0",
+    "node-fetch": "^3.3.2",
     "node-telegram-bot-api": "^0.66.0",
     "three": "^0.178.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/luckywalletclub/lucky-wallet-club.git"
+  },
+  "bugs": {
+    "url": "https://github.com/luckywalletclub/lucky-wallet-club/issues"
+  },
+  "homepage": "https://github.com/luckywalletclub/lucky-wallet-club#readme",
+  "description": ""
 }
