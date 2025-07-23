@@ -10,7 +10,10 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@react-three/drei": "^10.5.2",
+    "@react-three/fiber": "^9.2.0",
     "dotenv": "^17.2.0",
-    "node-telegram-bot-api": "^0.66.0"
+    "node-telegram-bot-api": "^0.66.0",
+    "three": "^0.178.0"
   }
 }

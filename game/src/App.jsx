@@ -35,7 +35,7 @@ export default function App() {
         ) : null}
       </div>
       <nav className="tab-bar">
-        {TABS.map(({ key, label, icon }) => (
+        {TABS.map(({ key, label }) => (
           <button
             key={key}
             className={`tab-btn${tab === key ? ' active' : ''}`}
@@ -44,7 +44,6 @@ export default function App() {
               setShowLeaderboard(false);
             }}
           >
-            {icon}
             <span>{label}</span>
           </button>
         ))}

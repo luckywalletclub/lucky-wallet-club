@@ -100,13 +100,13 @@ export function Home({ onLeaderboardClick }) {
   return (
     <div className="screen home-screen">
       <div className="header" style={{ marginBottom: 24 }}>
-        <h1 className="fancy-title">Lucky Wallet Club</h1>
+        <h1 className="fancy-title">Wallet Points : <span style={{color:'#ffb300'}}>{points}</span></h1>
       </div>
       <img
         src={walletImg}
         alt="Wallet"
         className={`wallet-img${walletClicked ? ' clicked' : ''}`}
-        style={{ width: 360, height: 270, margin: '32px 0 12px 0', zIndex: 2, position: 'relative' }}
+        style={{ width: 270, height: 202, margin: '32px 0 12px 0', zIndex: 2, position: 'relative' }}
       />
       <div className="progress-number" style={{ fontSize: '2rem', fontWeight: 700, color: '#222', marginBottom: 8 }}>{clicks}/{dailyLimit}</div>
       <ProgressBar value={clicks} max={dailyLimit} triggerConfetti={confettiTrigger} />

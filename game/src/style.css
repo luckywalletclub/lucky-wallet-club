@@ -259,3 +259,10 @@ body, #root, .app-bg {
   0% { filter: brightness(1.1) drop-shadow(0 0 0 #ffb300); }
   100% { filter: brightness(1.25) drop-shadow(0 0 12px #ffb300); }
 } 
+
+.tab-btn:focus,
+.tab-btn:focus-visible,
+.tab-btn:active {
+  outline: none !important;
+  box-shadow: none !important;
+} 
