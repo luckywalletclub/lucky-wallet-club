@@ -89,9 +89,43 @@ export function Home({ onLeaderboardClick }) {
   const [clicks, setClicks] = useState(0);
   const [confettiTrigger, setConfettiTrigger] = useState(false);
   const [walletClicked, setWalletClicked] = useState(false);
-  // Username artık backend'den alınacak, şimdilik dummy
   const [telegramUsername, setTelegramUsername] = useState('');
+  const [telegramId, setTelegramId] = useState('');
   const dailyLimit = 50;
+
+  // Oyuna girişte URL'den tid parametresini al ve backend'den kullanıcıyı çek
+  React.useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const tid = params.get('tid');
+    if (tid) {
+      setTelegramId(tid);
+      fetch(`${import.meta.env.VITE_BACKEND_URL || 'https://luckywallet-backend.onrender.com'}/api/user/${tid}`)
+        .then(res => res.json())
+        .then(data => {
+          setTelegramUsername(data.username || '');
+          setPoints(typeof data.points === 'number' ? data.points : 0);
+        });
+    }
+  }, []);
+
+  // Click yaptıkça puanı backend'e kaydet
+  const handleClick = () => {
+    if (clicks < dailyLimit && telegramId) {
+      fetch(`${import.meta.env.VITE_BACKEND_URL || 'https://luckywallet-backend.onrender.com'}/api/user/${telegramId}/points`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ points: 1 })
+      })
+        .then(res => res.json())
+        .then(data => {
+          setPoints(typeof data.points === 'number' ? data.points : points + 1);
+        });
+      setClicks(clicks + 1);
+      setConfettiTrigger(t => !t);
+      setWalletClicked(true);
+    }
+  };
+
   // Animasyon bitince class'ı kaldır
   React.useEffect(() => {
     if (walletClicked) {
@@ -99,6 +133,7 @@ export function Home({ onLeaderboardClick }) {
       return () => clearTimeout(t);
     }
   }, [walletClicked]);
+
   return (
     <div className="screen home-screen">
       <div className="header" style={{ marginBottom: 24 }}>
@@ -115,14 +150,7 @@ export function Home({ onLeaderboardClick }) {
         <ProgressBar value={clicks} max={dailyLimit} triggerConfetti={confettiTrigger} />
         <button
           className="click-btn"
-          onClick={() => {
-            if (clicks < dailyLimit) {
-              setPoints(points + 1);
-              setClicks(clicks + 1);
-              setConfettiTrigger(t => !t); // tetikleyici değişsin
-              setWalletClicked(true); // animasyonu tetikle
-            }
-          }}
+          onClick={handleClick}
           disabled={clicks >= dailyLimit}
         >
           CLICK!
