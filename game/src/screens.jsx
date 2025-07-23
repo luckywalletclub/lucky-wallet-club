@@ -93,6 +93,7 @@ export function Home({ onLeaderboardClick }) {
   const dailyLimit = 50;
   // Kullanıcı adını Telegram WebApp API'den al
   React.useEffect(() => {
+    console.log('Telegram WebApp:', window.Telegram);
     if (
       window.Telegram &&
       window.Telegram.WebApp &&
