@@ -167,7 +167,7 @@ export function Home({ onLeaderboardClick }) {
 
 export function Tasks({ onBack }) {
   return (
-    <div className="screen tasks-screen">
+    <div className="screen tasks-screen" style={{ marginTop: 48 }}>
       <div className="header">
         <BackButton onBack={onBack} />
         <h1>Tasks</h1>
@@ -179,7 +179,7 @@ export function Tasks({ onBack }) {
 
 export function Bag({ onBack }) {
   return (
-    <div className="screen bag-screen">
+    <div className="screen bag-screen" style={{ marginTop: 48 }}>
       <div className="header">
         <BackButton onBack={onBack} />
         <h1>Bag</h1>
@@ -191,7 +191,7 @@ export function Bag({ onBack }) {
 
 export function Market({ onBack }) {
   return (
-    <div className="screen market-screen">
+    <div className="screen market-screen" style={{ marginTop: 48 }}>
       <div className="header">
         <BackButton onBack={onBack} />
         <h1>Market</h1>
@@ -203,7 +203,7 @@ export function Market({ onBack }) {
 
 export function Leaderboard({ onBack }) {
   return (
-    <div className="screen leaderboard-screen">
+    <div className="screen leaderboard-screen" style={{ marginTop: 48 }}>
       <div className="header">
         <BackButton onBack={onBack} />
         <h1>Leaderboard</h1>
