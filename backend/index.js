@@ -8,7 +8,7 @@ app.use(cors({ origin: '*', credentials: false }));
 app.use(express.json());
 
 // MongoDB bağlantısı
-const mongoUri = process.env.MONGO_URI || 'mongodb://localhost:27017/luckywallet';
+const mongoUri = process.env.MONGO_URI || 'mongodb://localhost:27017/test';
 mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.error('MongoDB connection error:', err));
