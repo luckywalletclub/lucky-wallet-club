@@ -56,6 +56,8 @@ app.get('/api/user/:telegram_id', async (req, res) => {
   try {
     const user = await User.findOne({ telegram_id: req.params.telegram_id });
     if (!user) return res.status(404).json({ error: 'User not found' });
+    // points alanı yoksa 0 olarak ekle
+    if (typeof user.points !== 'number') user.points = 0;
     res.json(user);
   } catch (err) {
     res.status(500).json({ error: 'DB error', details: err.message });
