@@ -25,7 +25,7 @@ export default function App() {
         {showLeaderboard ? (
           <Leaderboard onBack={handleBack} />
         ) : tab === 'home' ? (
-          <Home onLeaderboard={() => setShowLeaderboard(true)} />
+          <Home onLeaderboardClick={() => setShowLeaderboard(true)} />
         ) : tab === 'tasks' ? (
           <Tasks onBack={handleBack} />
         ) : tab === 'bag' ? (
@@ -49,12 +49,6 @@ export default function App() {
           </button>
         ))}
       </nav>
-      {/* Sadece Home ekranında ve leaderboard açık değilken göster */}
-      {tab === 'home' && !showLeaderboard && (
-        <button className="leaderboard-btn" onClick={() => setShowLeaderboard(true)}>
-          <TrophyIcon />
-        </button>
-      )}
     </div>
   );
 } 

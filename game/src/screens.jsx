@@ -1,41 +1,80 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import walletImg from './assets/wallet.png';
+import { TrophyIcon } from './icons';
 
-function ProgressRing({ value, max, size = 240, stroke = 18, color = '#2563eb', bg = '#f1f5f9' }) {
-  const radius = (size - stroke) / 2;
-  const circ = 2 * Math.PI * radius;
-  const pct = Math.min(value / max, 1);
+function Confetti({ x, y, trigger }) {
+  const [show, setShow] = useState(false);
+  React.useEffect(() => {
+    if (trigger) {
+      setShow(false);
+      setTimeout(() => setShow(true), 10);
+      setTimeout(() => setShow(false), 500);
+    }
+  }, [trigger]);
+  if (!show) return null;
+  // 6 konfeti parçacığı
+  const colors = ['#2563eb', '#ffb300', '#38bdf8', '#ffd166', '#fff', '#222'];
   return (
-    <svg width={size} height={size} style={{ display: 'block', margin: '0 auto' }}>
-      <circle
-        cx={size / 2}
-        cy={size / 2}
-        r={radius}
-        fill="none"
-        stroke={bg}
-        strokeWidth={stroke}
-      />
-      <circle
-        cx={size / 2}
-        cy={size / 2}
-        r={radius}
-        fill="none"
-        stroke={color}
-        strokeWidth={stroke}
-        strokeDasharray={circ}
-        strokeDashoffset={circ * (1 - pct)}
-        strokeLinecap="round"
-        style={{ transition: 'stroke-dashoffset 0.4s cubic-bezier(.4,2,.6,1)' }}
-      />
-      <image
-        href={walletImg}
-        x={size / 2 - 60}
-        y={size / 2 - 45}
-        width="120"
-        height="90"
-        style={{ pointerEvents: 'none' }}
-      />
+    <svg style={{ position: 'absolute', left: x - 12, top: y - 24, pointerEvents: 'none', zIndex: 10 }} width={48} height={48}>
+      {Array.from({ length: 6 }).map((_, i) => (
+        <circle
+          key={i}
+          cx={24 + Math.cos((i / 6) * 2 * Math.PI) * 12}
+          cy={24 + Math.sin((i / 6) * 2 * Math.PI) * 12}
+          r={3 + Math.random() * 2}
+          fill={colors[i % colors.length]}
+        >
+          <animate
+            attributeName="cy"
+            from={24 + Math.sin((i / 6) * 2 * Math.PI) * 12}
+            to={8 + Math.sin((i / 6) * 2 * Math.PI) * 24}
+            dur="0.5s"
+            fill="freeze"
+          />
+          <animate
+            attributeName="opacity"
+            from="1"
+            to="0"
+            dur="0.5s"
+            fill="freeze"
+          />
+        </circle>
+      ))}
     </svg>
+  );
+}
+
+function ProgressBar({ value, max, triggerConfetti }) {
+  const pct = Math.min(value / max, 1) * 100;
+  // Barın ucunun x pozisyonu (240px genişlikte)
+  const barX = 12 + (pct / 100) * (240 - 24);
+  return (
+    <div style={{ width: 240, margin: '0 auto', marginBottom: 16, position: 'relative' }}>
+      <div style={{
+        width: '100%',
+        height: 18,
+        background: '#f1f5f9',
+        borderRadius: 12,
+        boxShadow: '0 2px 8px rgba(37,99,235,0.10)',
+        overflow: 'hidden',
+        position: 'relative',
+      }}>
+        <div
+          style={{
+            width: pct + '%',
+            height: '100%',
+            background: 'linear-gradient(90deg, #2563eb 0%, #ffb300 100%)',
+            borderRadius: 12,
+            transition: 'width 0.4s cubic-bezier(.4,2,.6,1)',
+            position: 'absolute',
+            left: 0,
+            top: 0,
+            zIndex: 1,
+          }}
+        />
+        <Confetti x={barX} y={9} trigger={triggerConfetti} />
+      </div>
+    </div>
   );
 }
 
@@ -45,34 +84,46 @@ function BackButton({ onBack }) {
   );
 }
 
-export function Home() {
+export function Home({ onLeaderboardClick }) {
   const [points, setPoints] = useState(0);
   const [clicks, setClicks] = useState(0);
-  const dailyLimit = 500;
+  const [confettiTrigger, setConfettiTrigger] = useState(false);
+  const [walletClicked, setWalletClicked] = useState(false);
+  const dailyLimit = 50;
+  // Animasyon bitince class'ı kaldır
+  React.useEffect(() => {
+    if (walletClicked) {
+      const t = setTimeout(() => setWalletClicked(false), 180);
+      return () => clearTimeout(t);
+    }
+  }, [walletClicked]);
   return (
     <div className="screen home-screen">
-      <div className="header">
-        <h1>Wallet Clicker</h1>
+      <div className="header" style={{ marginBottom: 24 }}>
+        <h1 className="fancy-title">Lucky Wallet Club</h1>
       </div>
-      <div style={{ margin: '24px 0 8px 0' }}>
-        <ProgressRing value={clicks} max={dailyLimit} />
-      </div>
-      <img src={walletImg} alt="Wallet" className="wallet-img" style={{ width: 120, height: 90, marginTop: '-180px', marginBottom: '12px', zIndex: 2, position: 'relative' }} />
+      <img
+        src={walletImg}
+        alt="Wallet"
+        className={`wallet-img${walletClicked ? ' clicked' : ''}`}
+        style={{ width: 360, height: 270, margin: '32px 0 12px 0', zIndex: 2, position: 'relative' }}
+      />
       <div className="progress-number" style={{ fontSize: '2rem', fontWeight: 700, color: '#222', marginBottom: 8 }}>{clicks}/{dailyLimit}</div>
+      <ProgressBar value={clicks} max={dailyLimit} triggerConfetti={confettiTrigger} />
       <button
         className="click-btn"
         onClick={() => {
           if (clicks < dailyLimit) {
             setPoints(points + 1);
             setClicks(clicks + 1);
+            setConfettiTrigger(t => !t); // tetikleyici değişsin
+            setWalletClicked(true); // animasyonu tetikle
           }
         }}
         disabled={clicks >= dailyLimit}
       >
         CLICK!
       </button>
-      <div className="points">Points: <b>{points}</b></div>
-      <div className="clicks-left">Clicks left: {dailyLimit - clicks}</div>
     </div>
   );
 }

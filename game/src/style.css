@@ -73,6 +73,14 @@ body, #root, .app-bg {
   border-radius: 18px;
   background: #fff;
 }
+.wallet-img.clicked {
+  animation: wallet-bounce 0.18s cubic-bezier(.4,2,.6,1);
+}
+@keyframes wallet-bounce {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.18); }
+  100% { transform: scale(1); }
+}
 .click-btn {
   font-family: 'Poppins', Arial, sans-serif;
   font-size: 1.5rem;
@@ -105,21 +113,25 @@ body, #root, .app-bg {
 }
 .tab-bar {
   position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100vw;
-  height: 80px;
-  background: #fff;
+  bottom: 48px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 94vw;
+  max-width: 440px;
+  height: 82px;
+  background: linear-gradient(135deg, #fff 60%, #f1f5f9 100%);
+  border-radius: 38px;
+  box-shadow: 0 8px 32px 0 #2563eb22, 0 1.5px 8px 0 #ffb30022, 0 0 0 2px #f1f5f9 inset;
+  border: 2.5px solid #e0e7ef;
   display: flex;
   align-items: center;
-  justify-content: space-around;
-  box-shadow: 0 -2px 12px rgba(0,0,0,0.10);
-  z-index: 10;
-  border-top-left-radius: 24px;
-  border-top-right-radius: 24px;
+  justify-content: space-evenly;
+  padding: 0 18px;
+  z-index: 20;
+  backdrop-filter: blur(10px);
 }
 .tab-btn {
-  background: none;
+  background: linear-gradient(135deg, #e0e7ef 0%, #fff 100%);
   border: none;
   outline: none;
   display: flex;
@@ -127,24 +139,52 @@ body, #root, .app-bg {
   align-items: center;
   justify-content: center;
   font-family: 'Poppins', Arial, sans-serif;
-  font-size: 0.95rem;
+  font-size: 1.08rem;
+  font-weight: 700;
   color: #2563eb;
-  opacity: 0.7;
-  padding: 0 8px;
+  opacity: 0.96;
+  width: 62px;
+  height: 62px;
   cursor: pointer;
-  transition: color 0.2s, opacity 0.2s;
-  border-radius: 16px;
-  margin: 0 2px;
+  border-radius: 50%;
+  margin: 0 0.7vw;
+  box-shadow: 0 2px 12px #2563eb11, 0 0 0 2px #e0e7ef inset;
+  position: relative;
+  transition: all 0.18s cubic-bezier(.4,2,.6,1);
+  will-change: transform, box-shadow;
+  filter: drop-shadow(0 2px 8px #ffb30022);
+}
+.tab-btn:hover {
+  background: linear-gradient(135deg, #ffecb3 0%, #fffbe6 100%);
+  color: #ffb300;
+  box-shadow: 0 0 0 8px #ffb30033, 0 2px 16px #2563eb22;
+  animation: tab-bounce 0.32s cubic-bezier(.4,2,.6,1);
+  opacity: 1;
 }
 .tab-btn.active {
-  color: #ffb300;
+  background: linear-gradient(135deg, #ffb300 0%, #ffd166 100%);
+  color: #2563eb;
+  box-shadow: 0 4px 24px #ffb30055, 0 0 0 8px #2563eb22;
+  transform: scale(1.13);
   opacity: 1;
-  background: linear-gradient(90deg, #2563eb 0%, #ffb300 100%);
-  box-shadow: 0 2px 8px rgba(37,99,235,0.10);
+  animation: tab-bounce 0.32s cubic-bezier(.4,2,.6,1);
+}
+@keyframes tab-bounce {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.18); }
+  100% { transform: scale(1.13); }
 }
 .tab-btn span {
-  font-size: 0.85rem;
+  font-size: 0.92rem;
   margin-top: 2px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-shadow: 0 1px 4px #fff8, 0 1px 0 #2563eb22;
+}
+.tab-btn svg {
+  font-size: 1.7em;
+  margin-bottom: 2px;
+  filter: drop-shadow(0 2px 6px #ffb30033);
 }
 .placeholder {
   color: #ffd166;
@@ -163,6 +203,10 @@ body, #root, .app-bg {
   cursor: pointer;
   box-shadow: 0 2px 8px rgba(0,0,0,0.10);
   transition: background 0.2s;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
 }
 .back-btn:hover {
   background: #ffb300;
@@ -181,6 +225,37 @@ body, #root, .app-bg {
     padding: 12px 24px;
   }
   .tab-bar {
-    height: 64px;
+    height: 62px;
+    padding: 0 6px;
+    border-radius: 22px;
+    min-width: 0;
+    max-width: 98vw;
   }
+  .tab-btn {
+    font-size: 0.92rem;
+    width: 38px;
+    height: 38px;
+    padding: 0;
+  }
+  .back-btn {
+    padding: 8px 14px;
+    font-size: 0.92rem;
+  }
+}
+
+/* Google Fonts import: @import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap'); */
+.fancy-title {
+  font-family: 'Luckiest Guy', cursive, sans-serif;
+  font-size: 2.7rem;
+  background: linear-gradient(90deg, #ffb300 0%, #2563eb 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 4px 24px #2563eb55, 0 1px 0 #fff, 0 2px 8px #ffb30044;
+  letter-spacing: 2px;
+  margin: 0;
+  animation: title-glow 2.2s infinite alternate cubic-bezier(.4,2,.6,1);
+}
+@keyframes title-glow {
+  0% { filter: brightness(1.1) drop-shadow(0 0 0 #ffb300); }
+  100% { filter: brightness(1.25) drop-shadow(0 0 12px #ffb300); }
 } 
