@@ -4,7 +4,11 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 
 const app = express();
-app.use(cors({ origin: '*', credentials: false }));
+
+app.use(cors({
+  origin: ['https://lucky-wallet-club.vercel.app', 'http://localhost:3000'],
+  credentials: true
+}));
 app.use(express.json());
 
 // MongoDB bağlantısı
