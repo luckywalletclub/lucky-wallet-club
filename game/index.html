@@ -16,9 +16,24 @@
         overflow: hidden;
       }
     </style>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    <script>
+      window.addEventListener('DOMContentLoaded', function() {
+        if (window.Telegram && window.Telegram.WebApp) {
+          // Telegram WebApp API ile tam ekranı iste
+          if (typeof window.Telegram.WebApp.requestFullscreen === 'function') {
+            window.Telegram.WebApp.requestFullscreen();
+          }
+          // Eski sürümler için expand fonksiyonu
+          if (typeof window.Telegram.WebApp.expand === 'function') {
+            window.Telegram.WebApp.expand();
+          }
+        }
+      });
+    </script>
   </body>
 </html> 
