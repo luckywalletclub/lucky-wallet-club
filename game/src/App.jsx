@@ -40,9 +40,12 @@ export default function App() {
             key={key}
             className={`tab-btn${tab === key ? ' active' : ''}`}
             onClick={() => {
-              setTab(key);
-              setShowLeaderboard(false);
+              if (tab !== key) {
+                setTab(key);
+                setShowLeaderboard(false);
+              }
             }}
+            disabled={tab === key}
           >
             <span>{label}</span>
           </button>

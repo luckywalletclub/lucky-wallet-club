@@ -266,3 +266,11 @@ body, #root, .app-bg {
   outline: none !important;
   box-shadow: none !important;
 } 
+
+.tab-btn:disabled {
+  pointer-events: none;
+  opacity: 0.72;
+  filter: grayscale(0.18) brightness(0.98);
+  cursor: default;
+  box-shadow: none;
+} 

@@ -89,7 +89,19 @@ export function Home({ onLeaderboardClick }) {
   const [clicks, setClicks] = useState(0);
   const [confettiTrigger, setConfettiTrigger] = useState(false);
   const [walletClicked, setWalletClicked] = useState(false);
+  const [telegramUsername, setTelegramUsername] = useState('');
   const dailyLimit = 50;
+  // Kullanıcı adını Telegram WebApp API'den al
+  React.useEffect(() => {
+    if (
+      window.Telegram &&
+      window.Telegram.WebApp &&
+      window.Telegram.WebApp.initDataUnsafe &&
+      window.Telegram.WebApp.initDataUnsafe.user
+    ) {
+      setTelegramUsername(window.Telegram.WebApp.initDataUnsafe.user.username || '');
+    }
+  }, []);
   // Animasyon bitince class'ı kaldır
   React.useEffect(() => {
     if (walletClicked) {
@@ -108,22 +120,27 @@ export function Home({ onLeaderboardClick }) {
         className={`wallet-img${walletClicked ? ' clicked' : ''}`}
         style={{ width: 270, height: 202, margin: '32px 0 12px 0', zIndex: 2, position: 'relative' }}
       />
-      <div className="progress-number" style={{ fontSize: '2rem', fontWeight: 700, color: '#222', marginBottom: 8 }}>{clicks}/{dailyLimit}</div>
-      <ProgressBar value={clicks} max={dailyLimit} triggerConfetti={confettiTrigger} />
-      <button
-        className="click-btn"
-        onClick={() => {
-          if (clicks < dailyLimit) {
-            setPoints(points + 1);
-            setClicks(clicks + 1);
-            setConfettiTrigger(t => !t); // tetikleyici değişsin
-            setWalletClicked(true); // animasyonu tetikle
-          }
-        }}
-        disabled={clicks >= dailyLimit}
-      >
-        CLICK!
-      </button>
+      <div style={{ marginTop: 48, display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
+        <div className="progress-number" style={{ fontSize: '2rem', fontWeight: 700, color: '#222', marginBottom: 8 }}>{clicks}/{dailyLimit}</div>
+        <ProgressBar value={clicks} max={dailyLimit} triggerConfetti={confettiTrigger} />
+        <button
+          className="click-btn"
+          onClick={() => {
+            if (clicks < dailyLimit) {
+              setPoints(points + 1);
+              setClicks(clicks + 1);
+              setConfettiTrigger(t => !t); // tetikleyici değişsin
+              setWalletClicked(true); // animasyonu tetikle
+            }
+          }}
+          disabled={clicks >= dailyLimit}
+        >
+          CLICK!
+        </button>
+        <div style={{ color: '#888', fontSize: '1.08rem', marginTop: 12, textAlign: 'center', fontWeight: 500 }}>
+          {telegramUsername ? `@${telegramUsername}` : 'Telegram ile giriş yapınız'}
+        </div>
+      </div>
     </div>
   );
 }
