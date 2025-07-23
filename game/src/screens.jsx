@@ -137,26 +137,27 @@ export function Home({ onLeaderboardClick }) {
 
   return (
     <div className="screen home-screen">
-      <div className="header" style={{ marginBottom: 24 }}>
+      <div className="header" style={{ marginBottom: 24, marginTop: 48 }}>
         <h1 className="fancy-title">Wallet Points : <span style={{color:'#ffb300'}}>{points}</span></h1>
       </div>
       <img
         src={walletImg}
         alt="Wallet"
         className={`wallet-img${walletClicked ? ' clicked' : ''}`}
-        style={{ width: 270, height: 202, margin: '32px 0 12px 0', zIndex: 2, position: 'relative' }}
+        style={{ width: 270, height: 202, margin: '48px 0 24px 0', zIndex: 2, position: 'relative' }}
       />
-      <div style={{ marginTop: 48, display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
-        <div className="progress-number" style={{ fontSize: '2rem', fontWeight: 700, color: '#222', marginBottom: 8 }}>{clicks}/{dailyLimit}</div>
+      <div style={{ marginTop: 64, display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
+        <div className="progress-number" style={{ fontSize: '2rem', fontWeight: 700, color: '#222', marginBottom: 16 }}>{clicks}/{dailyLimit}</div>
         <ProgressBar value={clicks} max={dailyLimit} triggerConfetti={confettiTrigger} />
         <button
           className="click-btn"
           onClick={handleClick}
           disabled={clicks >= dailyLimit}
+          style={{ marginTop: 32 }}
         >
           CLICK!
         </button>
-        <div style={{ color: '#888', fontSize: '1.08rem', marginTop: 12, textAlign: 'center', fontWeight: 500 }}>
+        <div style={{ color: '#888', fontSize: '1.08rem', marginTop: 24, textAlign: 'center', fontWeight: 500 }}>
           {telegramUsername ? `@${telegramUsername}` : 'Kullanıcı adı yükleniyor...'}
         </div>
       </div>
